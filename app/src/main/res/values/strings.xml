@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">RecipeApp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="recipes">Recipes</string>
+    <string name="what_to_you_want_to_cook_today">What to you want to cook today?</string>
+    <string name="search">Search</string>
+    <string name="dish_image">Dish image</string>
+</resources>
