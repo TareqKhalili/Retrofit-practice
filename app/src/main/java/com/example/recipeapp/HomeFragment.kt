@@ -1,11 +1,7 @@
 package com.example.recipeapp
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +12,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.recipeapp.adapters.RecipesRecyclerAdapter
 import com.example.recipeapp.databinding.FragmentHomeBinding
 import com.example.recipeapp.models.RecipesViewModel
+import com.example.recipeapp.models.RecipesViewModelFactory
+import com.example.recipeapp.repo.database.RecipesDatabase
+import com.example.recipeapp.utlis.CONNECTED_TO_INTERNET
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -30,7 +29,11 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        viewModel = ViewModelProvider(this)[RecipesViewModel::class.java]
+        val application = requireNotNull(this.activity).application
+        val dao = RecipesDatabase.getInstance(application).recipeDao
+
+        val viewModelFactory = RecipesViewModelFactory(dao)
+        viewModel = ViewModelProvider(this, viewModelFactory)[RecipesViewModel::class.java]
         binding.viewModel = viewModel
 
         adapter = RecipesRecyclerAdapter()
@@ -42,35 +45,14 @@ class HomeFragment : Fragment() {
             }
         }
 
-        if (!isOnline(this.requireContext())) {
-            Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show()
+        CONNECTED_TO_INTERNET.observe(viewLifecycleOwner) {
+            if (it) {
+                Toast.makeText(context, "Internet connected successfully", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Internet connection is lost", Toast.LENGTH_SHORT).show()
+            }
         }
 
         return binding.root
-    }
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    fun isOnline(context: Context): Boolean {
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val capabilities =
-            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-        if (capabilities != null) {
-            when {
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
-                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
-                    return true
-                }
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
-                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
-                    return true
-                }
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> {
-                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
-                    return true
-                }
-            }
-        }
-        return false
     }
 }

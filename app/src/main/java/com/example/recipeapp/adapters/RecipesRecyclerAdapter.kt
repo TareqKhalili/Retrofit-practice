@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.recipeapp.models.Meal
+import com.example.recipeapp.repo.database.entities.MealEntity
 import com.example.recipeapp.R
 import com.example.recipeapp.databinding.RecipeListItemBinding
 import com.example.recipeapp.utlis.RecipeDiffItemCallBack
 
 class RecipesRecyclerAdapter :
-    ListAdapter<Meal, RecipesRecyclerAdapter.RecipesViewHolder>(RecipeDiffItemCallBack()) {
+    ListAdapter<MealEntity, RecipesRecyclerAdapter.RecipesViewHolder>(RecipeDiffItemCallBack()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipesViewHolder {
         return RecipesViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context),
@@ -36,7 +36,7 @@ class RecipesRecyclerAdapter :
         private val cardRecipe = itemView.cardRecipe
 
 
-        fun bind(meal: Meal) {
+        fun bind(meal: MealEntity) {
             recipeName.text = meal.strMeal
 
             val requestOptions = RequestOptions()
