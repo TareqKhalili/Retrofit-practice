@@ -1,12 +1,10 @@
 package com.example.recipeapp
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.recipeapp.adapters.RecipesRecyclerAdapter
@@ -22,12 +20,13 @@ class HomeFragment : Fragment() {
     private lateinit var viewModel: RecipesViewModel
     private lateinit var adapter: RecipesRecyclerAdapter
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        setUpWelcomeMessage()
 
         val application = requireNotNull(this.activity).application
         val dao = RecipesDatabase.getInstance(application).recipeDao
@@ -47,12 +46,19 @@ class HomeFragment : Fragment() {
 
         CONNECTED_TO_INTERNET.observe(viewLifecycleOwner) {
             if (it) {
-                Toast.makeText(context, "Internet connected successfully", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Internet connected successfully", Toast.LENGTH_SHORT)
+                    .show()
             } else {
                 Toast.makeText(context, "Internet connection is lost", Toast.LENGTH_SHORT).show()
             }
         }
 
         return binding.root
+    }
+
+
+    private fun setUpWelcomeMessage() {
+        val welcomeMessage = "Hey " + MainActivity.USERNAME + ", what do you want to eat today?"
+        binding.welcomingText.text = welcomeMessage
     }
 }

@@ -10,5 +10,5 @@
     <color name="background">#B75D69</color>
     <color name="status_bar">#774C60</color>
     <color name="white">#FFFFFFFF</color>
-
+    <color name="background_darker">#FDFDFD</color>
 </resources>

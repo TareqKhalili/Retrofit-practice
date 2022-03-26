@@ -5,4 +5,12 @@
     <string name="what_to_you_want_to_cook_today">What to you want to cook today?</string>
     <string name="search">Search</string>
     <string name="dish_image">Dish image</string>
+    <string name="cooking_image">cooking image</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="saved_username_key">Username key</string>
+    <string name="saved_password_key">password key</string>
+    <string name="logo">logo</string>
+    <string name="welcome">"Welcome\n"</string>
 </resources>

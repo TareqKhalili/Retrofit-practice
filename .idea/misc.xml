@@ -3,7 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/cooking_ill.xml" value="0.3775" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.3095339888841385" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.27898550724637683" />
+        <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.1748610517315092" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.33" />
         <entry key="app/src/main/res/layout/recipe_list_item.xml" value="0.27923844061650044" />
       </map>
