@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -59,7 +59,7 @@ dependencies {
 
     // glide
     implementation("com.github.bumptech.glide:glide:4.13.0")
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
+    kapt('com.github.bumptech.glide:compiler:4.13.0')
 
     // room
     def roomVersion = "2.4.2"
@@ -82,7 +82,12 @@ dependencies {
     // optional - Guava support for Room, including Optional and ListenableFuture
     implementation("androidx.room:room-guava:$roomVersion")
 
+    //Dagger - Hilt
+    implementation "com.google.dagger:hilt-android:2.41"
+    kapt "com.google.dagger:hilt-compiler:2.41"
+    kapt "androidx.hilt:hilt-compiler:1.0.0"
 
-    implementation 'androidx.core:core-splashscreen:1.0.0-beta02'
-
+    // Activity KTX for viewModels()
+    implementation "androidx.activity:activity-ktx:1.4.0"
+    implementation 'androidx.fragment:fragment-ktx:1.4.1'
 }

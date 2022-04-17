@@ -1,4 +1,4 @@
-package com.example.recipeapp
+package com.example.recipeapp.views
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,19 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.example.recipeapp.adapters.RecipesRecyclerAdapter
 import com.example.recipeapp.databinding.FragmentHomeBinding
 import com.example.recipeapp.models.RecipesViewModel
-import com.example.recipeapp.models.RecipesViewModelFactory
-import com.example.recipeapp.repo.database.RecipesDatabase
 import com.example.recipeapp.utlis.CONNECTED_TO_INTERNET
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: RecipesViewModel
     private lateinit var adapter: RecipesRecyclerAdapter
+
+    private val viewModel: RecipesViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,11 +29,6 @@ class HomeFragment : Fragment() {
 
         setUpWelcomeMessage()
 
-        val application = requireNotNull(this.activity).application
-        val dao = RecipesDatabase.getInstance(application).recipeDao
-
-        val viewModelFactory = RecipesViewModelFactory(dao)
-        viewModel = ViewModelProvider(this, viewModelFactory)[RecipesViewModel::class.java]
         binding.viewModel = viewModel
 
         adapter = RecipesRecyclerAdapter()
@@ -58,7 +54,7 @@ class HomeFragment : Fragment() {
 
 
     private fun setUpWelcomeMessage() {
-        val welcomeMessage = "Hey " + MainActivity.USERNAME + ", what do you want to eat today?"
+        val welcomeMessage = "Hey ${viewModel.username}, what do you want to eat today?"
         binding.welcomingText.text = welcomeMessage
     }
 }

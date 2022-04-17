@@ -4,13 +4,24 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.recipeapp.repo.database.dao.RecipeDao
-import com.example.recipeapp.repo.database.entities.MealEntity
-import com.example.recipeapp.repo.endPointApi.EndPointInterface
+import com.example.recipeapp.data.database.dao.RecipeDao
+import com.example.recipeapp.data.database.entities.MealEntity
+import com.example.recipeapp.data.endPointApi.EndPointInterface
+import com.example.recipeapp.repo.Repository
 import com.example.recipeapp.utlis.CONNECTED_TO_INTERNET
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RecipesViewModel(private val dao: RecipeDao) : ViewModel() {
+@HiltViewModel
+class RecipesViewModel @Inject constructor(
+    private val dao: RecipeDao,
+    private val repo: Repository,
+) : ViewModel() {
+
+    @Inject
+    lateinit var username: String
+
     private val _recipes = MutableLiveData<List<MealEntity>>()
     val recipes: LiveData<List<MealEntity>>
         get() = _recipes
@@ -29,7 +40,7 @@ class RecipesViewModel(private val dao: RecipeDao) : ViewModel() {
 
     private suspend fun getMeals(): List<MealEntity> {
         return if (CONNECTED_TO_INTERNET.value == true) {
-            val meals = EndPointInterface.create().getRecipe(recipeName).meals
+            val meals = repo.getRecipes(recipeName).meals
             if (!meals.isNullOrEmpty()) {
                 dao.insertAll(meals)
             }
